@@ -7,7 +7,6 @@ export function fraseAPI(req:Request, res:Response):any {
         mensagem: 'Servidor online'
     })
 }
-
 export function criarReserva(req:Request, res:Response):any {
     const { tipo, destino, data, mes, ano, statusCheckIn } = req.body
     
@@ -35,4 +34,39 @@ export function criarReserva(req:Request, res:Response):any {
     return res.status(200).json({
         mensagem: 'Nova Reserva cadastrada com sucesso'
     }) 
+}
+export function listarReserva(req:Request, res:Response):any {
+    return res.send(reservas)
+}
+export function detalharReserva(req:Request, res:Response):any {
+    const { id } = req.params
+    const reserva = reservas.find((item)=>{
+        return item.id === id
+    })
+    if (!reserva){
+        return res.status(404).json({
+            mensagem: "Reserva não encontrada"
+        })
+    }
+    return res.status(200).json(reserva)
+}
+export function atualizarReserva(req:Request, res:Response):any {
+    const { id } = req.params
+    const { tipo, destino, data, mes, ano, statusCheckIn } = req.body
+    const reserva = reservas.find((item)=>{
+        return item.id === id
+    })
+    if (!reserva){
+        return res.status(404).json({
+            mensagem: "Reserva não encontrada"
+        })
+    }
+    reserva.tipo = tipo
+    reserva.destino = destino
+    reserva.data = data
+    reserva.mes = mes
+    reserva.ano = ano
+    reserva.statusCheckIn = statusCheckIn
+
+    return res.status(204).send()
 }
