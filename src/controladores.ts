@@ -70,3 +70,16 @@ export function atualizarReserva(req:Request, res:Response):any {
 
     return res.status(204).send()
 }
+export function excluirReserva(req:Request, res:Response):any {
+    const {id} =req.params
+    const reservaindice = reservas.findIndex((item)=>{
+        return item.id === id
+    })
+    if (reservaindice === -1){
+        return res.status(404).json({
+            mensagem: "Reserva não encontrada"
+        })
+    }
+    reservas.splice(reservaindice, 1)
+    return res.status(204).send()
+}
